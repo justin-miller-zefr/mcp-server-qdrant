@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 
 from fastembed import TextEmbedding
 from fastembed.common.model_description import DenseModelDescription, PoolingType, ModelSource
@@ -80,8 +81,16 @@ class FastEmbedProvider(EmbeddingProvider):
     def get_vector_name(self) -> str:
         """
         Return the name of the vector for the Qdrant collection.
+        Can be overridden via EMBEDDING_VECTOR_FIELD_NAME environment variable.
         Important: This is compatible with the FastEmbed logic used before 0.6.0.
         """
+        # Check for environment variable override first
+        vector_field_override = os.getenv("EMBEDDING_VECTOR_FIELD_NAME")
+        if vector_field_override:
+            logger.info(f"Using vector field name override: {vector_field_override}")
+            return vector_field_override
+        
+        # Default behavior: generate from model name
         model_name = self.embedding_model.model_name.split("/")[-1].lower()
         return f"fast-{model_name}"
 
