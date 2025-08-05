@@ -81,7 +81,7 @@ class FastEmbedProvider(EmbeddingProvider):
     def get_vector_name(self) -> str:
         """
         Return the name of the vector for the Qdrant collection.
-        Can be overridden via EMBEDDING_VECTOR_FIELD_NAME environment variable.
+        Supports environment variable override for compatibility with existing databases.
         Important: This is compatible with the FastEmbed logic used before 0.6.0.
         """
         # Check for environment variable override first
@@ -90,7 +90,7 @@ class FastEmbedProvider(EmbeddingProvider):
             logger.info(f"Using vector field name override: {vector_field_override}")
             return vector_field_override
         
-        # Default behavior: generate from model name
+        # Default behavior for new collections
         model_name = self.embedding_model.model_name.split("/")[-1].lower()
         return f"fast-{model_name}"
 
