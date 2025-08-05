@@ -12,7 +12,7 @@ COPY . .
 RUN uv pip install --system --no-cache-dir .
 
 # Expose the default port for SSE transport
-EXPOSE 8000
+EXPOSE 8080
 
 # Set environment variables with defaults that can be overridden at runtime
 ENV QDRANT_URL=""
@@ -22,5 +22,5 @@ ENV EMBEDDING_MODEL="sentence-transformers/all-MiniLM-L6-v2"
 ENV EMBEDDING_VECTOR_FIELD_NAME=""
 ENV EMBEDDING_CUSTOM_HF_MODEL_ID=""
 
-# Run the server with SSE transport
-CMD ["python", "-m", "mcp_server_qdrant.main", "--transport", "sse"]
+# Run the server with SSE transport (install from local source)
+CMD ["uvx", ".", "--transport", "sse"]
