@@ -84,15 +84,22 @@ class FastEmbedProvider(EmbeddingProvider):
         Supports environment variable override for compatibility with existing databases.
         Important: This is compatible with the FastEmbed logic used before 0.6.0.
         """
+        # Add debug logging to help troubleshoot
+        logger.info(f"DEBUG: Checking for EMBEDDING_VECTOR_FIELD_NAME environment variable")
+        
         # Check for environment variable override first
         vector_field_override = os.getenv("EMBEDDING_VECTOR_FIELD_NAME")
+        logger.info(f"DEBUG: EMBEDDING_VECTOR_FIELD_NAME = {vector_field_override}")
+        
         if vector_field_override:
             logger.info(f"Using vector field name override: {vector_field_override}")
             return vector_field_override
         
         # Default behavior for new collections
         model_name = self.embedding_model.model_name.split("/")[-1].lower()
-        return f"fast-{model_name}"
+        default_name = f"fast-{model_name}"
+        logger.info(f"DEBUG: Using default vector field name: {default_name}")
+        return default_name
 
     def get_vector_size(self) -> int:
         """Get the size of the vector for the Qdrant collection."""
