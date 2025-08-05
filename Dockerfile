@@ -23,4 +23,4 @@ ENV EMBEDDING_VECTOR_FIELD_NAME=""
 ENV EMBEDDING_CUSTOM_HF_MODEL_ID=""
 
 # Run the server with SSE transport (install from local source)
-CMD ["uvx", ".", "--transport", "sse"]
+CMD uvx mcp-server-qdrant --transport sse
