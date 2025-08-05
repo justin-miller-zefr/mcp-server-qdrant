@@ -11,7 +11,7 @@ COPY . .
 # Install the package from local source with all dependencies
 RUN uv pip install --system --no-cache-dir .
 
-# Expose the default port for SSE transport
+# Expose the default port for SSE transport (8080 for Cloud Run)
 EXPOSE 8080
 
 # Set environment variables with defaults that can be overridden at runtime
@@ -22,5 +22,5 @@ ENV EMBEDDING_MODEL="sentence-transformers/all-MiniLM-L6-v2"
 ENV EMBEDDING_VECTOR_FIELD_NAME=""
 ENV EMBEDDING_CUSTOM_HF_MODEL_ID=""
 
-# Run the server with SSE transport (install from local source)
+# Run the server with SSE transport
 CMD uvx mcp-server-qdrant --transport sse
