@@ -5,8 +5,11 @@ WORKDIR /app
 # Install uv for package management
 RUN pip install --no-cache-dir uv
 
-# Install the mcp-server-qdrant package
-RUN uv pip install --system --no-cache-dir mcp-server-qdrant
+# Copy the source code and pyproject.toml
+COPY . .
+
+# Install the package from local source with all dependencies
+RUN uv pip install --system --no-cache-dir .
 
 # Expose the default port for SSE transport
 EXPOSE 8000
@@ -16,6 +19,8 @@ ENV QDRANT_URL=""
 ENV QDRANT_API_KEY=""
 ENV COLLECTION_NAME="default-collection"
 ENV EMBEDDING_MODEL="sentence-transformers/all-MiniLM-L6-v2"
+ENV EMBEDDING_VECTOR_FIELD_NAME=""
+ENV EMBEDDING_CUSTOM_HF_MODEL_ID=""
 
 # Run the server with SSE transport
-CMD uvx mcp-server-qdrant --transport sse
+CMD ["python", "-m", "mcp_server_qdrant.main", "--transport", "sse"]
